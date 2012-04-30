@@ -1,0 +1,40 @@
+﻿1)  How many ping pong balls would it take to fill an average-sized school bus? Describe each step in your thought process.
+
+The general path to the solution involves finding the net volume of the inside of an average-sized school bus, finding the smallest volume ping pong balls can take up when packed efficiently, and finally dividing the bus volume by the ball volume.
+
+Gross School Bus Volume
+Upon Googling school buses, I found three general sizes with capacities ranging from 16 – 90 passengers.  The most iconic and common bus seems to be the Type-C “conventional” with a capacity range near the average of 45.  With this information, I found Blue Bird's “Vision” fits the bill and they kindly provide a spec sheet online @ www.blue-bird.com, detailing its approximate dimensions:
+     interior width = 90.75 inches
+     interior headroom = 74 in.
+     overall length = 289 in.
+     cabin length = 241 in. (They weren't specific if the overall length includes the front hood with engine; I assume it does.  After eyeballing some side-view photos which probably weren't to scale, I subtracted 48 in. for the engine. [289 – 48])
+     fillable length = 214 in. (At the front of the school bus are seemingly infinite number of variables changing the net volume of the school bus cabin.  There are stairs, hand rails, dashboards, a driver's seat, information displays, and panels of switches, buttons and doodads all warping the results.  Seeing this complexity, I found the front door width of 27 in. pleasantly included in the spec sheet.  I subtracted that space from the cabin length to remove those complexities. [241 - 27])
+          GROSS VOLUME = 1437117 cubic in. [214 * 90.75 * 74]
+
+Combined Volume of All Seats
+Next up is the matter concerning the space taken up by seats.  The spec sheet from before doesn't get specific about seats, instead laughing at me with statements of “varies by floor plan.”  In the interest of simplicity, I will not include the legs holding up the seats, even though they take up some space.  Using the smallest quoted capacity of 48 for the “Vision”, three children to a seat gives us 16 seats.  This setup has two columns of eight seats.  I will allow 24 in. for the width of the middle aisle, which means that each seat is:
+     seat width = 33.375 in. [(90.75 – 24) / 2]
+     seat height = 30 in. (I saw an article discussing seat safety improvements and one of the major upgrades was seat back height.)
+     seat depth = 18.75 in. (Our fillable length we are working with is 214 in. and we have eight seats per column.  I thought around 8 in. for leg room would be comfy, so subtracting that gives us our seat cushion depth. [(214 / 8) – 8])
+     seat cushion thickness = 6 in. (I like padded seats.)
+          SEAT BACK VOLUME = 4806 cubic in. (Didn't include the thickness of the seat cushion in the height in order to avoid duplicate volume in seat corner. [33.375 * (30 – 6) * 6])
+          SEAT BOTTOM VOLUME = 3754.6875 cubic in. [33.375 * 18.75 * 6]
+          GROSS SEAT VOLUME = 8560.6875 cubic in. (seat back + seat bottom)
+          ALL SEATS' COMBINED VOLUME = 136971 cubic in. (16 seats)
+
+School Bus Net Volume
+By subtracting all the seats' volumes from the gross school bus volume, we obtain the net volume of the school bus that can contain ping pong balls.
+          NET BUS VOLUME = 1300146 cubic in. [1437117 - 136971]
+
+Bring on the ping pong balls.  Olympic rules mandate ping pong balls have a 40 mm or ~1.5478 in. diameter.  Which means:
+     ping pong ball volume =  2.0449 cubic in. (Finding the volume of a sphere [(4 / 3) * pi * (r ^ 3)])
+
+Efficiently Packed Ping Pong Balls
+Unfortunately, because they are spheres, when two are placed right next to each other, there is a pretty big gap between them.  If I were to just hastily divide the net bus volume by the volume of the ball, I would be assuming the ping pong ball's shape was a cube with no gaps between it and its neighbors when placed in the school bus.  This is a problem.  Ping pong balls != cubes.  After asking the Google how tight spheres can be packed together, I came across the topic of “close-packing of equal spheres.”  Graduating from Wikipedia's material on this subject, I enrolled in Perdue University @ http://chemed.chem.purdue.edu/genchem/topicreview/bp/ch13/unitcell.php: 
+     number of ping pong balls per cubic unit cell = 4 (The tightest packing of ping pong balls in a cubic unit cell is a “Face-centered cubic” structure.  With balls on each of the eight corners and centered on each face of the cube, there ends up being 4 whole balls per cubic unit cell.)
+     cubic unit cell edge length = ~56.5685 mm or ~2.2271 in. (The way the balls align in the cubic unit cell, there are balls in every corner and one in the center of every face.  The diagonal distance across any face of the unit cell is 4 * radius.  Knowing this, because we have a “cubic” unit cell, we can find the edge length using the side length ratios of a 45-45-90 degree triangle.  The side lengths are 1 * x, 1 * x, sqrt(2) * x, meaning the hypotenuse = 4 * radius = sqrt(2) * x.  Solving for x, the edge length, we get 4 * radius / sqrt(2).  Plugging in the radius of our ping pong ball gives us [(4 * 20) / sqrt(2)])
+          CUBIC UNIT CELL VOLUME = ~181019.3360 cubic mm or ~11.0465 cubic in. (Because we are working with a cubic unit cell, the volume is edge length cubed.)
+
+The Finish Line
+Finishing the problem is a matter of dividing net school bus volume by the cubic unit cell volume, then multiplying that result by the number of ping pong balls in the unit cell.  [(1300146 / 11.0465) * 4]
+470790 is the approximate number of ping pong balls fitting in an average-sized school bus.  The actual number is higher because there is the entry way which I omitted due to the numerous complexities involved there and all irregularities of real life.

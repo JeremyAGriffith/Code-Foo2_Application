@@ -1,0 +1,57 @@
+body
+{
+    margin: 0;
+    padding: 0;
+    background-color: #F0F0F0;
+    font: 13px "Century Gothic", Arial, sans-serif;
+}
+
+p {
+    margin: 10px;
+}
+
+h1, h2
+{
+    margin: 10px;
+    font-weight: normal;
+    font-style: normal;
+}
+
+li {
+    list-style-type: none;
+}
+
+#header
+{
+	width: 100%;
+	margin-bottom: 1px;
+	background-color: #F0F0F0;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+#sideCol
+{
+	float: left;
+	width: 26%;
+    margin-bottom: 1px;
+    background-color: #F0F0F0;
+}
+
+#contentCol
+{
+	float: left;
+	width:  66%;
+	margin-left: 4%;
+    margin-bottom: 1px;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    background-color: #FFFFFF;
+}
+
+#footer
+{
+	clear: both;
+	width: 100%;
+	background-color: #F0F0F0;
+    border-top: 1px solid #CCCCCC;
+}

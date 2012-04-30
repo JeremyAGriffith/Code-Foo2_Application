@@ -1,0 +1,209 @@
+/***********************
+* Programmed in Frink
+* on my LG Spectrum
+***********************/
+
+singlePattern[poss, pattern, pop]:=
+{
+	if poss < pop
+ 	{
+		num = singlePattern[poss*10, pattern+"#, ", pop]
+		lett = singlePattern[poss*26, pattern+"A, ", pop]
+		eith = singlePattern[poss*36, pattern+"@, ", pop]
+		
+		//pick smallest
+		if num@0 < lett@0
+		{
+			if num@0 < eith@0
+				return num
+		} else
+		{
+		 	if lett@0 < eith@0
+				return lett
+		}
+		return eith
+	} else
+		return [poss, substrLen[pattern, 0, (length[pattern]-2)]]
+}
+
+maxPossWithEntries[numOfEntries]:=
+{
+	maxPoss = 0
+	
+	if numOfEntries <= 1
+		return maxPoss
+	else
+	{
+		patternPoss = 10 ^ numOfEntries
+		for i = 1 to (numOfEntries-1)
+		{
+			patternPoss = patternPoss * 26 / 10
+			if i == 1 || i == (numOfEntries-1)
+				maxPoss = maxPoss + patternPoss * numOfEntries
+			else
+			{
+				numOfPatterns = numOfEntries! / (i! * (numOfEntries-i)!)
+				maxPoss = maxPoss + patternPoss * numOfPatterns
+			}
+		}
+	
+		return maxPoss
+	}
+}
+
+findRangeOfNumOfEntries[pop]:=
+{
+	numOfEntries = 2
+	range = [0, 0]//the least & greatest # of entries that a combo of is > pop
+
+	//least
+	while maxPossWithEntries[numOfEntries] < pop
+		numOfEntries = numOfEntries + 1
+	range@0 = numOfEntries
+
+	//greatest
+	smallestPoss = 26 * 10 ^ (numOfEntries-1)//start @ least # of entries from above
+	while smallestPoss < pop
+	{
+		smallestPoss = smallestPoss * 10
+		numOfEntries = numOfEntries + 1
+	}
+	range@1 = (numOfEntries-1) < range@0 ? numOfEntries : (numOfEntries-1)
+
+	return range
+}
+
+leastComboWithEntries[numOfEntries, poss, combo, pop, numOfPatternsPerLetter]:=
+{
+	if poss == 0
+	{
+		for i = 1 to (numOfEntries-1)
+		{
+			if i == 1 || i == (numOfEntries-1)
+				numOfPatternsPerLetter@(i-1) = numOfEntries
+			else
+				numOfPatternsPerLetter@(i-1) = numOfEntries! / (i! * (numOfEntries-i)!)
+		}
+	}
+	
+	if poss < pop
+	{
+		letters = new array
+		patternPoss = 10 ^ numOfEntries
+
+		for i = 0 to (numOfEntries-2)
+		{
+			patternPoss = patternPoss * 26 / 10
+			if numOfPatternsPerLetter@i > 0
+			{
+				numOfPatternsPerLetter@i = numOfPatternsPerLetter@i - 1
+				combo.push[i+1]
+
+				letters.push[leastComboWithEntries[numOfEntries, poss+patternPoss, combo.shallowCopy[], pop, numOfPatternsPerLetter.shallowCopy[]]]
+
+				combo.pop[]
+				numOfPatternsPerLetter@i = numOfPatternsPerLetter@i + 1
+			}
+		}
+		
+		//now return the least
+		least = letters@0
+		for i = 0 to (length[letters]-1)
+		{
+			temp = letters@i@1
+			if min[temp, least@1] != least@1
+				least = letters@i
+		}
+
+		return least
+	} else
+		return [numOfEntries, poss, combo.shallowCopy[]]
+}
+
+evalComboOfPatterns[bestSinglePoss, pop]:=
+{
+	range = findRangeOfNumOfEntries[pop]
+	combos = new array
+	
+	for i = range@0 to range@1
+	{
+		combos@(i-range@0) = leastComboWithEntries[i, 0, [], pop, []]
+	}
+
+	least = combos@0
+	for i = 0 to (range@1 - range@0)
+	{
+		temp = combos@i@1
+		if min[temp, least@1] != least@1
+			least = combos@i
+	}
+
+	if bestSinglePoss <= least@1
+		return []
+	else
+		return least
+}
+
+makePatternWithNums[numOfLetters, numOfEntries]:=
+{
+	pattern = new array
+
+	for i = 1 to numOfEntries
+	{
+		if i <= numOfLetters
+			pattern.push["A"]
+		else
+			pattern.push["#"]
+	}
+
+	return pattern
+}
+
+printOut[combo, pop]:=
+{
+	patterns = makeArray[[length[combo@2]]]
+	poss = combo@1
+	temp = new array
+	all = new array
+	numOfLetters = 0
+
+	sort[combo@2]
+	for i = 0 to (length[combo@2]-1)
+	{
+		if combo@2@i != numOfLetters
+		{
+			numOfLetters = combo@2@i
+			temp = makePatternWithNums[combo@2@i, combo@0]
+			all = toArray[temp.lexicographicPermute[]]
+		}
+		
+		patterns@i = all.pop[]
+	}
+
+	println["By manufacturing all of the following patterns, there would be a combined total of " + poss + " possibilities, creating " + (poss-pop) + " excess license plate(s)"]
+	for i = 0 to (length[patterns]-1)
+		println[patterns@i]
+}
+
+
+userInput = input["Find a pattern of license plates for a given population.", ["Population?", ["Do you want the result to have the least excess plates possible (not necessarily the simplest, single pattern)? [y/n]", "y"]]]
+pop = 0
+pop = eval[userInput@0]
+
+println["Symbols for pattern entries:\n# - any number\nA - any letter\n@ - may be either a number or letter\n, - only used to seperate entries in a pattern\n"]
+println["For your chosen population of " + pop]
+
+singlePattern = singlePattern[1, "", pop]
+if uc[userInput@1] == "Y"
+{
+	if pop > 360
+	{
+		combo = evalComboOfPatterns[singlePattern@0, pop]
+		if length[combo] == 0
+			println["The pattern [" + singlePattern@1 + "] has a total of " + singlePattern@0 + " possibilities, creating " + (singlePattern@0-pop) + " excess license plate(s)"]
+		else
+			printOut[combo, pop]
+	} else
+		println["The pattern [" + singlePattern@1 + "] has a total of " + singlePattern@0 + " possibilities, creating " + (singlePattern@0-pop) + " excess license plate(s)"]
+} else
+	println["The pattern [" + singlePattern@1 + "] has a total of " + singlePattern@0 + " possibilities, creating " + (singlePattern@0-pop) + " excess license plate(s)"]

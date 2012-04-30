@@ -1,0 +1,54 @@
+<html>
+	<head>
+		<title>IGN's CodeFoo2 Liquid Layout</title>
+		<link rel="stylesheet" type="text/css" href="stylesheet.css">
+	</head>
+
+	<body>
+		<div id="header">
+			<p>
+			I could be this webpage name with a nice shiny image
+			</p>
+		</div>
+
+		<div id="sideCol">
+			<p>
+			This column is commonly a navigation panel, listing the different pages of the site.
+			</p>
+			<ul>
+				<li>home</li>
+				<li>about</li>
+				<li>this</li>
+				<li>that</li>
+				<li>and the other thing</li>
+			</ul>
+		</div>
+
+		<div id="contentCol">
+			<p>
+			Here is where the meat of the current page could go.
+			</p>
+			<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sit amet massa eros. Sed a risus eget mi adipiscing accumsan. Cras ante eros, vehicula ac pulvinar eget, iaculis eget sapien. Fusce consectetur metus eget nisi adipiscing elementum. Donec condimentum ipsum quis magna malesuada sed placerat leo porttitor. Sed in eros nec lectus lacinia iaculis. Aliquam nec lacus diam, id tempor lectus.
+			</p>
+			<p>
+			Integer mi urna, elementum eget rhoncus quis, adipiscing non libero. Ut vitae nibh eget augue blandit accumsan. Donec sagittis elementum tempor. Quisque vitae turpis quam. Praesent pulvinar sagittis iaculis. Pellentesque aliquet tristique mollis. Etiam volutpat, sem eget imperdiet scelerisque, est lectus sodales turpis, quis vehicula velit libero eu sapien. Sed eget adipiscing tortor. Cras fermentum aliquet enim, quis consectetur velit sollicitudin vel. Etiam velit purus, ultrices sit amet varius vitae, facilisis sed justo. Curabitur feugiat iaculis enim, et sollicitudin tortor interdum ut. Maecenas ac nisi felis.
+			</p>
+			<p>
+			Quisque adipiscing quam nec lectus pulvinar sit amet viverra dui mattis. Suspendisse tincidunt odio ac odio tincidunt fermentum. Phasellus in suscipit nibh. Praesent neque massa, egestas sed ultrices ac, vulputate ut lorem. Nulla et tortor imperdiet dolor ullamcorper volutpat vel sed lacus. Praesent vitae est lectus, in porta nunc. Nam eros nulla, pellentesque ac porta sit amet, ultricies in ligula. Vestibulum aliquam, justo ut varius porttitor, purus sem sagittis ipsum, id consequat libero tellus nec massa. Donec eleifend consequat tellus, ut fermentum metus iaculis id. Fusce sed tortor est. In luctus placerat libero, in cursus felis suscipit quis. Pellentesque dictum enim eget nisi malesuada viverra. Aenean et imperdiet arcu.
+			</p>
+			<p>
+			Vivamus accumsan metus sed ipsum ornare tincidunt. Nam luctus ligula eu dolor tempus accumsan. Praesent aliquet mollis neque, et auctor orci malesuada quis. Quisque pellentesque adipiscing elementum. Ut ullamcorper, magna auctor pharetra imperdiet, sem nisi mattis metus, a cursus libero ipsum eget massa. Sed a arcu est. Etiam augue turpis, sollicitudin at posuere nec, feugiat at nisi. Curabitur non erat sed orci posuere congue. Nullam libero ipsum, sodales sed facilisis in, volutpat at odio. Nam sed nulla turpis, in bibendum sem.
+			</p>
+			<p>
+			In sed viverra quam. Pellentesque at rhoncus magna. Integer nec orci eros. Sed iaculis luctus nunc at pellentesque. Morbi molestie blandit sagittis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nullam volutpat, tortor laoreet commodo aliquam, nisl ligula posuere augue, ullamcorper scelerisque elit purus a eros. Integer faucibus sem quis mi pulvinar eu tincidunt augue dapibus.
+			</p>
+		</div>
+
+		<div id="footer">
+			<p>
+			Copyrights, more links and general finishing statements
+			</p>
+		</div>
+	</body>
+</html>
