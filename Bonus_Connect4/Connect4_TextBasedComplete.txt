@@ -1,0 +1,344 @@
+/****************
+* Programmed in Frink
+* on LG Spectrum.
+* Frink is available on Google's Play Store
+****************/
+
+validMove[board, col]:=
+{
+	colIndex = col - 1
+	if colIndex > 6 || colIndex < 0//NOT valid col
+		return false
+	if board@0@colIndex != 0//top row is taken
+		return false
+	else
+		return true
+}
+
+update[board, col, playersDisc]:=
+{
+	colIndex = col -1
+
+	//find empty row in the given col
+	i = length[board] - 1
+	while board@i@colIndex != 0
+	{
+		i = i - 1
+	}
+	
+	board@i@colIndex = playersDisc
+	return board
+}
+
+compTurn[board, userInput]:=
+{
+	colIndex = userInput - 1
+	//find the row the last player just placed a disk in
+	i = length[board] - 1
+	while board@i@colIndex != 0 && i >= 0
+	{
+		i = i - 1
+	}
+	row = i + 1
+
+	//vertical
+	running = 1
+	for i = 0 to 1
+	{
+		//up
+		if i == 0
+		{
+			if (row-1) >= 0
+			{
+				j = row - 1
+				while j >= 0 && board@j@colIndex == 1
+				{
+					running = running + 1
+					j = j - 1
+				}
+			}
+		} else//down
+		{
+			if (row+1) <= (length[board]-1)
+			{
+				j = row + 1
+				while j <= (length[board]-1) && board@j@colIndex == 1
+				{
+					running = running + 1
+					j = j + 1
+				}
+			}
+		}
+		if running == 3
+			if board@0@(userInput-1) == 0
+				return userInput
+			else
+				return random[1, 7]
+	}
+
+	//horizontal
+	running = 1
+	for i = 0 to 1
+	{
+		//left
+		if i == 0
+		{
+			if (colIndex-1) >= 0
+			{
+				j = colIndex - 1
+				while j >= 0 && board@row@j == 1
+				{
+					running = running + 1
+					j = j - 1
+				}
+			}
+		} else//right
+		{
+			if (colIndex+1) <= (length[board@0]-1)
+			{
+				j = colIndex + 1
+				while j <= (length[board@0]-1) && board@row@j == 1
+				{
+					running = running + 1
+					j = j + 1
+				}
+			}
+		}
+		if running == 3
+			if userInput-2 >= 0
+			{
+				if board@row@(userInput-2) == 0
+					return userInput-1
+			}
+			if userInput <= length[board@0]-1
+			{
+				if board@row@(userInput) == 0
+					return userInput
+				else
+					return random[1, 7]
+			}
+	}
+
+	return random[1, 7]
+}
+
+gameOver[board, col, playerDisk]:=
+{
+	colIndex = col - 1
+	//find the row the last player just placed a disk in
+	i = length[board] - 1
+	while board@i@colIndex != 0 && i >= 0
+	{
+		i = i - 1
+	}
+	row = i + 1
+
+	//4 vertical?
+	running = 1
+	for i = 0 to 1
+	{
+		//up
+		if i == 0
+		{
+			if (row-1) >= 0
+			{
+				j = row - 1
+				while j >= 0 && board@j@colIndex == playerDisk
+				{
+					running = running + 1
+					j = j - 1
+				}
+			}
+		} else//down
+		{
+			if (row+1) <= (length[board]-1)
+			{
+				j = row + 1
+				while j <= (length[board]-1) && board@j@colIndex == playerDisk
+				{
+					running = running + 1
+					j = j + 1
+				}
+			}
+		}
+		if running >= 4
+			if playerDisk == 1
+				return [true, true]
+			else
+				return [true, false]
+	}
+	
+	//4 horizontal?
+	running = 1
+	for i = 0 to 1
+	{
+		//left
+		if i == 0
+		{
+			if (colIndex-1) >= 0
+			{
+				j = colIndex  - 1
+				while j >= 0 && board@row@j == playerDisk
+				{
+					running = running + 1
+					j = j - 1
+				}
+			}
+		} else//right
+		{
+			if (colIndex+1) <= (length[board@0]-1)
+			{
+				j = colIndex  + 1
+				while j <= (length[board@0]-1) && board@row@j == playerDisk
+				{
+					running = running + 1
+					j = j + 1
+				}
+			}
+		}
+		if running >= 4
+			if playerDisk == 1
+				return [true, true]
+			else
+				return [true, false]
+	}
+
+	//4 diagonal \\?
+	running = 1
+	for i = 0 to 1
+	{
+		//up left
+		if i == 0
+		{
+			if (colIndex-1) >= 0 && (row-1) >= 0
+			{
+				j = row - 1
+				k = colIndex  - 1
+				while j >= 0 && k >= 0 && board@j@k == playerDisk
+				{
+					running = running + 1
+					j = j - 1
+					k = k - 1
+				}
+			}
+		} else//down right
+		{
+			if (colIndex+1) <= (length[board@0]-1) && (row+1) <= (length[board]-1)
+			{
+				j = row + 1
+				k = colIndex  + 1
+				while j <= (length[board]-1) && k <= (length[board@0]-1) && board@j@k == playerDisk
+				{
+					running = running + 1
+					j = j + 1
+					k = k + 1
+				}
+			}
+		}
+		if running >= 4
+			if playerDisk == 1
+				return [true, true]
+			else
+				return [true, false]
+	}
+
+	//4 diagonal //?
+	running = 1
+	for i = 0 to 1
+	{
+		//up right
+		if i == 0
+		{
+			if (colIndex+1) <= (length[board@0]-1) && (row-1) >= 0
+			{
+				j = row - 1
+				k = colIndex  + 1
+				while j >= 0 && k <= (length[board@0]-1) && board@j@k == playerDisk
+				{
+					running = running + 1
+					j = j - 1
+					k = k + 1
+				}
+			}
+		} else//down left
+		{
+			if (colIndex-1) >= 0 && (row+1) <= (length[board]-1)
+			{
+				j = row + 1
+				k = colIndex  - 1
+				while j <= (length[board]-1) && k >= 0 && board@j@k == playerDisk
+				{
+					running = running + 1
+					j = j + 1
+					k = k - 1
+				}
+			}
+		}
+		if running >= 4
+			if playerDisk == 1
+				return [true, true]
+			else
+				return [true, false]
+	}
+
+	//NO winner yet
+	return [false, false]
+}
+
+displayBoard[board]:=
+{
+	boardString = ""
+
+	for row = 0 to (length[board]-1)
+	{
+		for col = 0 to (length[board@0]-1)
+		{
+			if board@row@col == 0
+				boardString = boardString + "O "//empty
+			else
+				if board@row@col == 1
+					boardString = boardString + "@ "//user's disk
+				else
+					boardString = boardString + "*  "//computer's disk
+		}
+		boardString = boardString + "\n"
+	}
+	boardString = boardString + "You are @ symbols and\nthe computer is *\n\n"
+
+	return boardString
+}
+
+
+gameOver = [false, false]
+board = makeArray[[6, 7], 0]
+userInput = 0
+compInput = 0
+
+while !gameOver@0
+{
+	//user's turn
+	userInput = eval[input[displayBoard[board] + "Pick a column to drop your next disc in. [1-7]"]]
+	while !validMove[board, userInput]
+	{
+		if userInput > 7 || userInput < 1
+			userInput = eval[input[displayBoard[board] + "That column is NOT on the board; try a diffenent column to drop your next disc in. [1-7]"]]
+		else
+			userInput = eval[input[displayBoard[board] + "That column is full try a diffenent column to drop your next disc in. [1-7]"]]
+	}
+	board = update[board, userInput, 1]//1 is the user's disc
+	gameOver = gameOver[board, userInput, 1]
+	if gameOver@0
+		break
+
+	//computer's turn
+	compInput = compTurn[board, userInput]
+	while !validMove[board, compInput]
+		compInput = compTurn[board]
+	board = update[board, compInput, -1]//-1 is the computer's disc
+	gameOver = gameOver[board, compInput, -1]
+}
+
+if gameOver@1
+	println["You Won ! Congrats"]
+else
+	println["Computer :( Nice try"]
